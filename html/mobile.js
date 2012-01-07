@@ -1,4 +1,3 @@
-
 // initialize map when page ready
 var map;
 
