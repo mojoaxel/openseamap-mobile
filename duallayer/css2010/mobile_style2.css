@@ -40,11 +40,11 @@ div.olControlZoomPanel .olControlZoomOutItemInactive {
 
 div.olControlZoomPanel .olControlZoomInItemInactive {
 	border-radius: 5px 5px 0 0;
-	top: 20px;
+	top: 30px;
 }
 div.olControlZoomPanel .olControlZoomOutItemInactive {
 	border-radius: 0 0 5px 5px ;
-	top: 57px;
+	top: 67px;
 }
 div.olControlZoomPanel .olControlZoomOutItemInactive:after ,
 div.olControlZoomPanel .olControlZoomInItemInactive:after{
@@ -103,11 +103,11 @@ div.olControlZoomPanel .olControlZoomToMaxExtentItemInactive {
  text-align: center;
  font-weight: bold;
  text-decoration: none;
- top: 20px; 
- right:20px; 
- width:60px; 
- height:25px;
- z-index:3000; 
+ top: 30px; 
+ right: 10px; 
+ width: 60px; 
+ height: 25px;
+ z-index: 3000; 
  background: rgba(0,0,0,0.2);
  font-family: Arial;
  padding: 2px 4px;
@@ -120,11 +120,11 @@ div.olControlZoomPanel .olControlZoomToMaxExtentItemInactive {
  text-align: center;
  font-weight: bold;
  text-decoration: none;
- top: 66px; 
- right:20px; 
- width:60px; 
- height:25px;
- z-index:3000; 
+ top: 76px; 
+ right: 10px; 
+ width: 60px; 
+ height: 25px;
+ z-index: 3000; 
  background: rgba(0,0,0,0.2);
  font-family: Arial;
  padding: 2px 4px;
