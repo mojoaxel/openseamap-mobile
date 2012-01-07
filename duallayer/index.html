@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>OpenSeaMap by osm2go</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		
+		<link rel="stylesheet" href="css2010/mobile_style2.css" type="text/css"> <!-- inportant! -->
+		<link rel="stylesheet" href="css2010/mobile_overlay.css" type="text/css"> <!-- The Info overlay -->
+		
+		<script src="openlayers211/OpenLayers.js"></script>
+		<script src="js/popupmarker_ol211.js"></script>
+		<script type="text/javascript" src="js/tappenbeck_ol211.js"></script>
+		<script src="js/mobile_overlay.js"></script>
+		<script src="js/util.js"></script>
+		<script src="js/mobile.js"></script>
+	</head>
+	<body>
+		<h1 id="title">OSM-Wanderkarte - mobile</h1>
+		<div id="tags">mobile</div>
+		<p id="shortdesc">A basic full-screen map for mobile devices.</p>
+		<div id="map">
+			<!-- <div id="zlevel" style="zlevel">13</div> -->
+			<!-- Steuerung der Ueberblendtechnik fuer das Info-Fenster ||| js noch aktivieren !!!-->
+			<div id="displayinfo" style="display: none;"></div>
+			<div id="displayroutes" style="display: none;"></div>
+			<div id="geolocation" class="menue"><a href="javascript:geolocate()">Ort</a></div>
+			<!--<div id="information" class="menue"><a href="javascript:getinfo()">Info</a></div>-->
+			<div id="information" class="menue">
+				<a href='#' onclick='return clicker_info(1036);'>Info</a>
+			</div>
+			<!-- nachfolgende Zeile ist MEHRFACH in die Info-Zeilen zu integrieren -->
+			<!-- <a href='#' onclick='return clicker();'>*** Info 2 ***</a> -->
+		</div>
+		<script>
+			init();
+		</script>
+    </body>
+</html>
