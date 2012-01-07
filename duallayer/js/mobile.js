@@ -92,6 +92,15 @@ var init = function () {
 		), 13);
 	}
 	//document.getElementById("zlevel").innerHTML = map.getZoom();
+	
+	
+	//============================================================================
+	// add a "Add to homescreen" bubble on iPad/iPhone
+	//============================================================================
+	if ('standalone' in navigator && !navigator.standalone && (/iphone|ipod|ipad/gi).test(navigator.platform) && (/Safari/i).test(navigator.appVersion)) {
+		document.write('<link rel="stylesheet" href="css2010\/add2home.css">');
+		document.write('<script type="application\/javascript" src="js\/\/add2home.js" charset="utf-8"><\/s' + 'cript>');
+	}
 };
 
 
