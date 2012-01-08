@@ -33,7 +33,7 @@ var init = function () {
 		displayProjection: new OpenLayers.Projection("EPSG:4326"),
 			controls:[
 				new OpenLayers.Control.Attribution(),
-				new OpenLayers.Control.Permalink(),
+				//new OpenLayers.Control.Permalink(),
 				//new OpenLayers.Control.ZoomLevel(),
 				new OpenLayers.Control.ScaleLine({topOutUnits : "nmi", topInUnits: "nmi"}),
 				new OpenLayers.Control.TouchNavigation({
