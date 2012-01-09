@@ -44,6 +44,7 @@ var init = function () {
 				new OpenLayers.Control.ZoomPanel()
 			],
 			layers: [
+				/*
 				new OpenLayers.Layer.OSM("Mapnik",
 				[
 					"http://a.tile.openstreetmap.org/${z}/${x}/${y}.png",
@@ -54,18 +55,46 @@ var init = function () {
 					opacity: 1.0,
 					numZoomLevels: 18
 				}),
+				*/
+				/*
+				new OpenLayers.Layer.OSM("Custom",
+				[
+					"http://toolserver.org/tiles/hikebike/${z}/${x}/${y}.png"
+				],
+				{
+					opacity: 1.0,
+					numZoomLevels: 18
+				}),
+				*/
+				/*
+				new OpenLayers.Layer.CloudMade("CloudMade", {
+					key: '753ab316708d59d3918e7e3e4f6b8e37',
+					styleId: 
+						//33332 Nighttheme
+						1714 //  bright, white
+						//31408 // dark, black and gray
+				}),
+				*/
 				
-				new OpenLayers.Layer.OSM(
-					"OpenSeaMapPaths",
+				new OpenLayers.Layer.OSM("OSMDE",
+					"http://a.tile.openstreetmap.de/tiles/osmde/${z}/${x}/${y}.png",
+					{
+						opacity: 1.0,
+						numZoomLevels: 18
+					}
+				),
+				
+				new OpenLayers.Layer.OSM("OpenSeaMapPaths",
 					"http://tiles.openseamap.org/seamark/${z}/${x}/${y}.png",
 					{ 
 						numZoomLevels: 19,
 						isBaseLayer: false,
 						transitionEffect: "null",
 						opacity: 0.8,
-						attribution:"OpenSeaMap"
+						attribution: "OpenSeaMap"
 					}
 				)
+				
 			]
 	});
 	
