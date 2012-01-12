@@ -24,23 +24,11 @@ OpenLayers.Layer.CloudMade = OpenLayers.Class(OpenLayers.Layer.TMS, {
         var url = [
         //"http://a.tile.cloudmade.com/" + prefix,
         //"http://b.tile.cloudmade.com/" + prefix,
-        //"http://c.tile.cloudmade.com/" + prefix,
-		"../cloudmade_tiles_proxy.php?" + "key=" + options.key + "&" + "styleid=" + options.styleId
-		//"../cloudmade_caching_proxy.php?" + "key=" + options.key + "&" + "styleid=" + options.styleId
-		];
+        "http://c.tile.cloudmade.com/" + prefix];
         this.async = true;
         this.images = [];
         var newArguments = [name, url, options];
         OpenLayers.Layer.TMS.prototype.initialize.apply(this, newArguments);
-		
-		this.db = openDatabase('testdb1', '1.0', 'todo manager', 50 * 1024 * 1024); //50MB
-		this.db.transaction(
-			function (transaction) {
-				transaction.executeSql('CREATE TABLE IF NOT EXISTS tiles (id text,value text)', [], 
-					function(error) { console.log("NO ERROR in create table: ", error); }, 
-					function(error) { console.log("ERROR in create table: ", error); });
-			}
-		);
     },
 
     getURLasync: function (bounds, scope, url, callback) {
@@ -56,25 +44,23 @@ OpenLayers.Layer.CloudMade = OpenLayers.Class(OpenLayers.Layer.TMS, {
 			//return 'http://cloudmade.com/js-api/images/empty-tile.png'
 			return 'openlayers211/img/blank.png';
         else {
-            var t = new tilecache(this.db);
+            var t = new tilecache();
             x = ((x % limit) + limit) % limit;
 
             var url = this.url;
-            //var path = z + "/" + x + "/" + y + ".png";
-			var path = "&z=" + z + "&x=" + x + "&y=" + y;
+            var path = z + "/" + x + "/" + y + ".png";
 
             if (url instanceof Array) url = this.selectUrl(path, url);
 
-			var key = 'base_' + z + '_' + x + '_' + y;
-			t.get(key, url + path, scope.imgDiv, function(saveToCache) {
-				if (true) {
-					//console.log("start saving " + key);
-					t.set(key, url + path, scope.imgDiv, function() {
-						//console.log("SET ready " + key);
+			var key = z + '_' + x + '_' + y;
+            t.get(key, url + path, scope.imgDiv, function() {
+				console.log("GET ready");
+				//scope.imgDiv.onload = function() {
+					console.log("image finished loading ", scope.imgDiv.id);
+					t.set(key, url + path, document.getElementById(scope.imgDiv.id), function() {
+						console.log("SET ready");
 					});
-				} else {
-					console.log("Do not save image");
-				}
+				//};
 			});
             this.images.push({
                 'key': key,
@@ -98,9 +84,14 @@ OpenLayers.Layer.CloudMade = OpenLayers.Class(OpenLayers.Layer.TMS, {
 
     CLASS_NAME: "OpenLayers.Layer.CloudMade"
 });
-
-	
-function tilecache(db) {
+/*
+var db = function (arg) {
+        console.log("OPEN: ", arg);
+        var db = openDatabase('testdb1', '1.0', 'todo manager', 50 * 1024 * 1024); //50MB
+        return db;
+    }();
+*/
+function tilecache() {
     var tdb;
     this.size = 50;
     this.width = 256;
@@ -110,14 +101,14 @@ function tilecache(db) {
     var opendb = db;
     var webdb = function () {
             this.insert = function (key, value, callback) {
-                //console.log("INSERT: ", key);
+                console.log("INSERT: ", key);
                 opendb.transaction(
 					function (transaction) {
 						transaction.executeSql('CREATE TABLE IF NOT EXISTS tiles (id text,value text)', [], 
 							function(error) { console.log("NO ERROR in create table: ", error); }, 
 							function(error) { console.log("ERROR in create table: ", error); });
 						transaction.executeSql('DELETE FROM tiles WHERE id = ?', [key], 
-							function(error) { /*console.log("NO ERROR in create table: ", error);*/ }, 
+							function(error) { console.log("NO ERROR in create table: ", error); }, 
 							function(error) { console.log("ERROR in delete: ", error); });
 						transaction.executeSql('INSERT INTO tiles VALUES (?,?)', [key, value], 
 							function () {
@@ -128,32 +119,29 @@ function tilecache(db) {
 							});
 					}
 				);
-			}
-			this.select = function (key, url, img, callback) {
-				//console.log("SELECT: ", key, url);
-				opendb.transaction(
-					function (transaction) {
-						transaction.executeSql('SELECT value FROM tiles WHERE id = ?', [key], function (transaction, result) {
-							if (result.rows.length < 1) {
-								////////////////console.log("Image not found in DB: " + key);
-								img.onload = function() {
-									////////////////console.log("Finished loading image: " + key);
-									if (callback) callback.call(true);
-								};
-								img.src = url;
-							} else {
-								img.src = result.rows.item(0).value;
-								//console.debug("found image in DB: " + result.rows.item(0).value);
-								if (callback) callback.call(false);
-								return;
-							}
-						}, function (transaction, error) {
-							img.src = url;
-							console.error("error while select "+key+": ", error);
-						});
+            }
+            this.select = function (key, url, img, onerror) {
+                console.log("SELECT: ", key, url);
+                opendb.transaction(
 
-					}
-				);
+                function (transaction) {
+                    transaction.executeSql('SELECT value FROM tiles WHERE id = ?', [key], function (transaction, result) {
+                        if (result.rows.length < 1) {
+                            img.src = url;
+                            console.error("image not found in DB: " + url);
+                            if (onerror) onerror(key, url, img);
+                        } else {
+                            img.src = result.rows.item(0).value;
+                            console.debug("found image in DB: " + result.rows.item(0).value);
+                            return;
+                        }
+                    }, function () {
+                        img.src = url;
+                        console.error("image not found in DB: " + url);
+                        if (onerror) onerror(key, url, img);
+                    });
+
+                });
             }
             this.empty = function () {
                 console.log("EMPTY");
@@ -168,8 +156,8 @@ function tilecache(db) {
     if (window.openDatabase) tdb = new webdb;
 
     this.set = function (key, url, img, callback) {
-		//console.log('create_canvas');
-		var tile = new Image();
+        console.time('create_canvas');
+        var tile = new Image();
 		tile.src = url;
         if (tile.complete) {
             var canvas = document.createElement("canvas");
@@ -177,21 +165,18 @@ function tilecache(db) {
             canvas.height = this.height;
             var ctx = canvas.getContext("2d");
             ctx.drawImage(tile, 0, 0);
-			try {
-				var imageData = canvas.toDataURL();
-				if (imageData.indexOf("data:image/png") < 0) {
-                console.error('Your browser does not support this :(');
+            var imageData = canvas.toDataURL();
+            if (imageData.indexOf("data:image/png") < 0) {
+                alert('Your browser does not support this :(');
                 return;
             }
             if (tdb) tdb.insert(key, imageData, callback);
-			} catch (err) {
-				console.log(err);
-			}
         }
     }
     this.get = function (key, url, img, callback) {
         if (!window.openDatabase) 
 			img.src = url;
+			//tdb.insert(key, url, img);
         else {
 			//console.log("GET: ", key, url);
 			tdb.select(key, url, img, callback);

@@ -1,6 +1,7 @@
 ﻿CACHE MANIFEST
-# 2012-01-07 14:47:00
+# 2012-01-11 22:27:00
 
+CACHE:
 index.html
 css2010/add2home.css
 css2010/mobile_overlay.css
@@ -12,14 +13,12 @@ js/mobile_overlay.js
 js/popupmarker_ol211.js
 js/tappenbeck_ol211.js
 js/util.js
+js/cloudmade.js
 openlayers211/OpenLayers.js
-openlayers211/img/blank.gif
+openlayers211/img/blank.png
 
-NETWORK
-http://a.tile.openstreetmap.org/*
-http://b.tile.openstreetmap.org/*
-http://c.tile.openstreetmap.org/*
-http://tiles.openseamap.org/seamark/*
+FALLBACK:
+../cloudmade_tiles_proxy.php openlayers211/img/blank.png
 
-FALLBACK
-openlayers211/img/blank.gif
+NETWORK:
+*

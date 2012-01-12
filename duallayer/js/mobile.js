@@ -66,7 +66,7 @@ var init = function () {
 					numZoomLevels: 18
 				}),
 				*/
-				/*
+				
 				new OpenLayers.Layer.CloudMade("CloudMade", {
 					key: '753ab316708d59d3918e7e3e4f6b8e37',
 					styleId: 
@@ -74,8 +74,8 @@ var init = function () {
 						1714 //  bright, white
 						//31408 // dark, black and gray
 				}),
-				*/
 				
+				/*
 				new OpenLayers.Layer.OSM("OSMDE",
 					"http://a.tile.openstreetmap.de/tiles/osmde/${z}/${x}/${y}.png",
 					{
@@ -83,7 +83,7 @@ var init = function () {
 						numZoomLevels: 18
 					}
 				),
-				
+				*/
 				new OpenLayers.Layer.OSM("OpenSeaMapPaths",
 					"http://tiles.openseamap.org/seamark/${z}/${x}/${y}.png",
 					{ 
