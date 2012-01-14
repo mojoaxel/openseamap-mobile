@@ -1,0 +1,54 @@
+#displayinfo, #displayroutes {
+	z-index: 10000;
+	filter: alpha(opacity=50); /*older IE*/
+	filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50); /* IE */
+	-moz-opacity: .70; /*older Mozilla*/
+	-khtml-opacity: 0.7;   /*older Safari*/
+	opacity: 0.7;   /*supported by current Mozilla, Safari, and Opera*/
+	background-color:#000000;
+	/* position:fixed; top:0px; left:0px; width:100%; height:100%; color:#FFFFFF; text-align:center; vertical-align:middle; */
+	position:fixed; top:0px; left:0px; width:100%; height:100%; color:#FFFFFF; text-align:center;
+	text-shadow: 0px 0px 9px white;
+}
+
+.infoheader, .mapheader {
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 15px;
+  color: #ffffff;
+}
+
+.infotxt{
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 10px;
+}
+
+.maptxt{
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 10px;
+  color: #ffff00;
+}
+.maplegend{
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 10px;
+  color: #ffffff;
+}
+
+.infoclose{
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 15px;
+	color: #ffffff;
+	position: absolute;
+	right: 40px;
+	top: 40px;
+}
+
+.infobackground{
+  align: center;
+  valign: middle;
+  width: 100%;
+  height: 100%;
+}
+	
+#infofield {
+ color: white;
+ }	
