@@ -118,9 +118,10 @@ var init = function () {
 	//============================================================================
 	
 	// Position und Zoomstufe der Karte
-	var lon = 12.1018;
-	var lat = 54.1674;
-	var zoom = 13;
+	//var lon = 12.1018;	var lat = 54.1674; //Rostock
+	var lat = 51.241; lon = 6.7613; //Düsseldorf
+	
+	var zoom = 14;
 
 	checkForPermalink();
 
