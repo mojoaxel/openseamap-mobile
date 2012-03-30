@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet mobile example</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link rel="stylesheet" href="./dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="./dist/leaflet.ie.css" /><![endif]-->
+
+	<!-- <script src="./dist/leaflet.js"></script> -->
+	<script src="./dist/leaflet-include.js"></script>
+
+	<style>
+		body {
+			padding: 0;
+			margin: 0;
+		}
+		html, body, #map {
+			height: 100%;
+		}
+	</style>
+</head>
+<body>
+	<div id="map"></div>
+
+	<script>
+		var lat = 53.55;
+		var lng = 8.54;
+	
+		var map = new L.Map('map', {
+			center: new L.LatLng(lat, lng),
+			zoom: 13
+		});
+
+		var cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade';
+		
+		var cloudmadeDayUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+			cloudmadeDay = new L.TileLayer(cloudmadeDayUrl, {maxZoom: 17, attribution: cloudmadeAttribution});
+			
+		var cloudmadeNightUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/8844/256/{z}/{x}/{y}.png',
+			cloudmadeNight = new L.TileLayer(cloudmadeNightUrl, {maxZoom: 17, attribution: cloudmadeAttribution});
+
+		var seamapUrl = 'http://tiles.openseamap.org/seamark/{z}/{x}/{y}.png',
+			seamapAttribution = 'Map data &copy; 2011 OpenSeaMap contributors',
+			seamap = new L.TileLayer(seamapUrl, {maxZoom: 17, attribution: seamapAttribution});
+		
+		//map.addLayer(cloudmadeDay);
+		map.addLayer(cloudmadeNight);
+		map.addLayer(seamap);
+
+		//map.on('locationfound', onLocationFound);
+		//map.on('locationerror', onLocationError);
+
+		//map.locateAndSetView();
+		
+		//var bounds = new L.LatLngBounds(new L.LatLng(lat-0.02, lng-0.02), new L.LatLng(lat-0.02, lng-0.02));
+		//map.fitBounds(bounds);
+		
+		console.log(L);
+		
+		//var ship = new L.MultiPolygon(polygon);
+		//var ship = new L.Circle(new L.LatLng(53.55, 8.55), 800);
+		/*
+		var ship = new L.Rectangle( bounds, {
+			fillColor: "#FF0000",
+			color: "#000000",
+			opacity: 1,
+			weight: 2
+		});
+		*/
+		
+		var r = 0.001;
+		var a = 0;
+		var poly_points = [
+			[lat-r, lng+r],
+			[lat-r, lng-r],
+			[lat+r, lng-r],
+			[lat+2*r, lng],
+			[lat+r, lng+r]	
+		];
+		for (var i = 0, latlngs2 = [], len = poly_points.length; i < len; i++) {
+		    latlngs2.push(new L.LatLng(poly_points[i][0], poly_points[i][1]));
+		}
+		var ship = new L.Polygon(latlngs2, {
+			fillColor: "#FF0000",
+			color: "#FF0000",
+			opacity: 1,
+			weight: 2
+		});
+		
+		map.addLayer(ship);
+		
+		var layers = {
+			"Tagesansicht": cloudmadeDay,
+			"Nachtansicht": cloudmadeNight
+		};
+		var overlays = {
+			"OpenSeaMap": seamap,
+			"Position": ship
+		};
+		var layerControl = new L.Control.Layers(layers, overlays);
+		map.addControl(layerControl);
+		
+		//map.fitBounds(ship.getBounds());
+		
+		/*
+		onLocationFound({
+			accuracy: 800,
+			latlng: {
+				lat: 53.55,
+				lng: 8.55
+			}
+		});
+		*/
+
+		function onLocationFound(e) {
+			var radius = e.accuracy / 2;
+
+			//var marker = new L.Marker(e.latlng);
+			//map.addLayer(marker);
+			//marker.bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+			//var circle = new L.Circle(e.latlng, radius);
+			//map.addLayer(circle);
+		}
+
+		function onLocationError(e) {
+			alert(e.message);
+		}
+	</script>
+</body>
+</html>
