@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html manifest="offline.appcache">
-<!--  <html>  -->
+<!--  <html manifest="offline.appcache"> -->
+<html>
 <head>
 	<title>Leaflet mobile example</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -19,6 +19,7 @@
 	
 	<link rel="stylesheet" href="./dist/leaflet.css" />
 	<!--[if lte IE 8]><link rel="stylesheet" href="./dist/leaflet.ie.css" /><![endif]-->
+	<link rel="stylesheet" href="./dist/leaflet_osm.css" />
 
 	<script src="./dist/leaflet.js"></script>
 	<!-- <script src="./dist/leaflet-include.js"></script> -->
@@ -45,7 +46,7 @@
 			zoom: 13
 		});
 
-		var cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade';
+		var cloudmadeAttribution = '(V'+L.VERSION+') Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade';
 		
 		var cloudmadeDayUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
 			cloudmadeDay = new L.TileLayer(cloudmadeDayUrl, {maxZoom: 17, attribution: cloudmadeAttribution});

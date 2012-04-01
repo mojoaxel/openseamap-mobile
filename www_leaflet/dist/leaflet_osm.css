@@ -1,0 +1,10 @@
+/* increase the zoom button size */
+.leaflet-control-zoom a {
+	width: 25px;
+	height: 25px;
+}
+
+/* increase the font size of the layers control */
+.leaflet-control-layers label {
+	font-size: large;
+}
