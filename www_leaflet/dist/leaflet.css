@@ -72,6 +72,7 @@ a.leaflet-active {
 .leaflet-top,
 .leaflet-bottom {
 	position: absolute;
+	z-index: 999999; /* <-----------------------------------------*/
 	}
 .leaflet-top {
 	top: 0;
@@ -126,8 +127,8 @@ a.leaflet-active {
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	border-radius: 4px;
-	width: 19px;
-	height: 19px;
+	width: 25px;
+	height: 25px;
 	}
 .leaflet-control-zoom a:hover {
 	background-color: #fff;
@@ -180,8 +181,9 @@ a.leaflet-active {
 	top: 1px;
 	}
 .leaflet-control-layers label {
+	font-size: large;
 	display: block;
-	}
+}
 .leaflet-control-layers-separator {
 	height: 0;
 	border-top: 1px solid #ddd;
@@ -321,3 +323,9 @@ a.leaflet-active {
 .leaflet-popup-close-button {
 	background: white url(images/popup-close.png);
 	}
+	
+
+/* see leaflet issue #161 */
+img.leaflet-tile {
+	outline: 1px solid transparent;
+}

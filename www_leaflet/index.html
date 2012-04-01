@@ -20,8 +20,8 @@
 	<link rel="stylesheet" href="./dist/leaflet.css" />
 	<!--[if lte IE 8]><link rel="stylesheet" href="./dist/leaflet.ie.css" /><![endif]-->
 
-	<!-- <script src="./dist/leaflet.js"></script> -->
-	<script src="./dist/leaflet-include.js"></script>
+	<script src="./dist/leaflet.js"></script>
+	<!-- <script src="./dist/leaflet-include.js"></script> -->
 
 	<style>
 		body {
@@ -57,8 +57,8 @@
 			seamapAttribution = 'Map data &copy; 2011 OpenSeaMap contributors',
 			seamap = new L.TileLayer(seamapUrl, {maxZoom: 17, attribution: seamapAttribution});
 		
-		//map.addLayer(cloudmadeDay);
-		map.addLayer(cloudmadeNight);
+		map.addLayer(cloudmadeDay);
+		//map.addLayer(cloudmadeNight);
 		map.addLayer(seamap);
 
 		//map.on('locationfound', onLocationFound);
