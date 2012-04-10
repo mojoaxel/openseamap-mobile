@@ -73,7 +73,10 @@
         <a href="#" id="zoomOut" data-role="button" data-icon="minus" data-iconshadow="false" data-shadow="false" data-iconpos="notext">Zoom Out</a>
       </div>
       <h1>OpenSeaMap.org</h1>
-      <a href="#page-about" data-role="button" data-icon="info" class="ui-btn-right" data-iconpos="notext" data-iconshadow="false" data-shadow="false">Info</a>
+      <div class="ui-btn-right">
+        <a href="#" id="setHomePosition" data-role="button" data-icon="home" data-iconpos="notext" data-iconshadow="false" data-shadow="false">Position</a>
+        <a href="#page-about" data-role="button" data-icon="info" data-iconpos="notext" data-iconshadow="false" data-shadow="false">Info</a>
+      </div>
     </header>
  
     <article data-role="content" style="margin: 0; padding: 0">
@@ -174,8 +177,15 @@
           touchZoom: true
         });
           
-        //map.addLayer(cloudmadeDay);
-        map.addLayer(cloudmadeNight);
+        var now = new Date();
+        var hours = now.getHours();
+        
+        if ((hours >= 9) && (hours <= 19)) { //Day
+          map.addLayer(cloudmadeDay);
+        } else { //Night
+          map.addLayer(cloudmadeNight);
+        }
+        
         map.addLayer(seamap);
         
         //var attribution, map, tileLayer, tileUrl;
@@ -216,6 +226,7 @@
         $('#zoomIn').click(function() { map.zoomIn(); });
         $('#zoomOut').click(function() { map.zoomOut(); });
         
+        $('#setHomePosition').click(function() { map.locateAndSetView(16); });
         
         
         map.on('locationerror', function(e) {
