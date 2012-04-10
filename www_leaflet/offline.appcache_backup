@@ -1,0 +1,14 @@
+CACHE MANIFEST
+# 2012-04-04 15:22
+
+CACHE:
+index.html
+dist/leaflet.css
+dist/leaflet.ie.css
+dist/images/layers.png
+dist/images/zoom-in.png
+dist/images/zoom-out.png
+dist/leaflet-include.js
+
+NETWORK:
+*
