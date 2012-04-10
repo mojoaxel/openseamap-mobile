@@ -170,7 +170,8 @@
           sports = new L.TileLayer(sportsUrl, {minZoom: 8, maxZoom: 18, attribution: OpenSeaMapAttribution});
         
         map = new window.L.Map('map', {
-          zoomControl: false
+          zoomControl: false,
+          touchZoom: true
         });
           
         //map.addLayer(cloudmadeDay);
