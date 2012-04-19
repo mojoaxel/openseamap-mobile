@@ -281,7 +281,7 @@
             if (lastposition == null) {
               //if no last position is in store use a default position ("Warnemünde")
               console.log("setting default position");
-              var defaultPos = new L.LatLng(12.10075, 54.19039);
+              var defaultPos = new L.LatLng(54.18, 12.10);
               return map.setView(defaultPos, 13);
             } else {
               var pos = new L.LatLng(lastposition.latlng.lat, lastposition.latlng.lng);
