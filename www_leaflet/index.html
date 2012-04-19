@@ -113,14 +113,12 @@
         var OpenStreetMapAttribution = 'Map data &copy; 2012 OpenStreetMap contributors';
         var CloudmadeAttribution = '(V'+L.VERSION+') Imagery &copy; 2012 CloudMade' + ', ' + OpenStreetMapAttribution;
         
+        var openSeaMapUrl = 'http://osm1.wtnet.de/tiles/base/{z}/{x}/{y}.png',
+          openSeaMap = new L.TileLayer(openSeaMapUrl, {maxZoom: 17, attribution: OpenStreetMapAttribution});
         /*
-        var openStreetMapUrl = 'http://osm1.wtnet.de/tiles/base/{z}/{x}/{y}.png',
-          openStreetMap = new L.TileLayer(openStreetMapUrl, {maxZoom: 17, attribution: OpenStreetMapAttribution});
-        */
-        
         var cloudmadeDayUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
           cloudmadeDay = new L.TileLayer(cloudmadeDayUrl, {maxZoom: 17, attribution: CloudmadeAttribution});
-          
+        */
         var cloudmadeNightUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/8844/256/{z}/{x}/{y}.png',
           cloudmadeNight = new L.TileLayer(cloudmadeNightUrl, {maxZoom: 17, attribution: CloudmadeAttribution});
         
@@ -181,7 +179,7 @@
         var hours = now.getHours();
         
         if ((hours >= 9) && (hours <= 19)) { //Day
-          map.addLayer(cloudmadeDay);
+          map.addLayer(seamap);
         } else { //Night
           map.addLayer(cloudmadeNight);
         }
@@ -200,7 +198,7 @@
         
         var layers = {
           //"OpenStreetMap": openStreetMap,
-          "Tagesansicht": cloudmadeDay,
+          "Tagesansicht": openSeaMap,
           "Nachtansicht": cloudmadeNight
         };
         var overlays = {
