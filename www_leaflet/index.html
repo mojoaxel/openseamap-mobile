@@ -61,8 +61,11 @@
   
   <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
   <script src="http://leaflet.cloudmade.com/dist/leaflet.js"></script>
-  
   <script src="http://westcoastlogic.com/lawnchair/downloads/lawnchair-0.6.1.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+  
+  <link rel="stylesheet" href="add2home/add2home.css">
+  <script src="add2home/add2home.js"></script>
 </head>
 
 
@@ -87,9 +90,9 @@
 
     <script>
     (function() {
-      var demo;
-      demo = {};
-      demo.resizeContentArea = function() {
+      var app;
+      app = {};
+      app.resizeContentArea = function() {
         var content, contentHeight, footer, header, viewportHeight;
         
         window.scroll(0, 0);
@@ -105,8 +108,8 @@
         
         return $("#map").height(contentHeight);
       };
-      window.demo = demo;
-      $(window).bind('orientationchange pageshow resize', window.demo.resizeContentArea);
+      window.app = app;
+      $(window).bind('orientationchange pageshow resize', window.app.resizeContentArea);
       
       $(document).bind('pageinit', function() {
         if ($('.leaflet-container').length > 0) return;
@@ -188,18 +191,7 @@
         
         map.addLayer(seamap);
         
-        //var attribution, map, tileLayer, tileUrl;
-        //tileUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-        //attribution = 'Map data © OpenStreetMap contributors';
-        //tileLayer = new window.L.TileLayer(tileUrl, {
-        //  maxZoom: 18,
-        //  attribution: attribution
-        //});
-        //map.addLayer(tileLayer);
-        
-        
         var layers = {
-          //"OpenStreetMap": openStreetMap,
           "Tagesansicht": openSeaMap,
           "Nachtansicht": cloudmadeNight
         };
@@ -209,18 +201,6 @@
         };
         var layerControl = new L.Control.Layers(layers, overlays);
         map.addControl(layerControl);
-        
-        
-        btn_layer = $('.leaflet-control-layers-base');
-        console.log(btn_layer.text());
-        
-        //<div class="leaflet-control-layers-base">
-        //  <label><input name="leaflet-base-layers" type="radio"> Tagesansicht</label>
-        //  <label><input name="leaflet-base-layers" type="radio"> Nachtansicht</label>
-        //</div>
-        
-        //radios.page();
-        //console.log(radios);
         
         
         $('#zoomIn').click(function() { map.zoomIn(); });
@@ -237,7 +217,7 @@
             posMarker = new L.Marker(e.latlng);
             map.addLayer(posMarker);
           } else {
-            posMarker.setLatLng(pos);
+            posMarker.setLatLng(pos, false);
           }
           
           // save last position to the store
@@ -273,7 +253,7 @@
         })
         
         map.on('locationerror', function(e) {
-          // read last position freom store
+          //read last position from store
           var store = new Lawnchair('openseamp',function(e){
               console.log('store open');
           });
@@ -299,6 +279,7 @@
   </div>
   
   
+  
   <div data-role="page" id="page-about">
     <header data-role="header">
       <a href="#page-map" data-icon="arrow-l" class="ui-btn-left" data-direction="reverse" data-transition="slide" data-iconshadow="false" data-shadow="false">Map</a>
@@ -308,7 +289,7 @@
       <li data-role="list-divider">support this app</li>
       <li><a href="http://flattr.com/thing/622453/OpenSeaMap-Mobile" target="_blank">flattr this app</a></li>
       <!-- 
-      <li>donate some bugs via paypal</li>
+      <li>donate via paypal</li>
       <li>advertice this app on twitter</li>
       <li>advertice this app on facebook</li>
       -->
@@ -318,10 +299,7 @@
     </ul>
   </div>
   
-  <script src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
   
-  <link rel="stylesheet" href="add2home/add2home.css">
-  <script src="add2home/add2home.js"></script>
-
+  
 </body>
 </html>
