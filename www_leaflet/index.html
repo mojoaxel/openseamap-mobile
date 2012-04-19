@@ -224,13 +224,49 @@
         $('#zoomIn').click(function() { map.zoomIn(); });
         $('#zoomOut').click(function() { map.zoomOut(); });
         
-        $('#setHomePosition').click(function() { map.locateAndSetView(16); });
+        $('#setHomePosition').click(function() { map.locateAndSetView(); });
         
+        var marker;
+        
+        map.on('locationfound', function(e) {
+          if (!marker) {
+            marker = new L.Marker(e.latlng);
+            map.addLayer(marker);
+          } else {
+            marker.setLatLng(e.latlng)
+          }
+          
+          /*
+          var pos = e.latlng;
+          var lat = pos.lat;
+          var lng = pos.lng;
+          var r = 0.0002;
+          var poly_points = [
+            [lat-r, lng+r],
+            [lat-r, lng-r],
+            [lat+r, lng-r],
+            [lat+2*r, lng],
+            [lat+r, lng+r]  
+          ];
+          for (var i = 0, latlngs2 = [], len = poly_points.length; i < len; i++) {
+            latlngs2.push(new L.LatLng(poly_points[i][0], poly_points[i][1]));
+          }
+          var ship_layer = new L.Polygon(latlngs2, {
+            fillColor: "#FF0000",
+            color: "#FF0000",
+            opacity: 1,
+            weight: 2
+          });
+          
+          map.addLayer(ship_layer);
+          */
+        })
         
         map.on('locationerror', function(e) {
-          alert(e.message);
-          return map.fitWorld();
+          alert('Could not load GPS Position: ' + e.message);
+          map.fitWorld();
         });
+        
         return map.locateAndSetView(16);
       });
         
