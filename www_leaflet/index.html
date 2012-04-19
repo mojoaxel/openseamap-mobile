@@ -61,6 +61,8 @@
   
   <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
   <script src="http://leaflet.cloudmade.com/dist/leaflet.js"></script>
+  
+  <script src="http://westcoastlogic.com/lawnchair/downloads/lawnchair-0.6.1.min.js"></script>
 </head>
 
 
@@ -226,17 +228,25 @@
         
         $('#setHomePosition').click(function() { map.locateAndSetView(); });
         
-        var marker;
+        var posMarker;
         
         map.on('locationfound', function(e) {
-          if (!marker) {
-            marker = new L.Marker(e.latlng);
-            map.addLayer(marker);
+          var pos = e.latlng;
+          
+          if (!posMarker) {
+            posMarker = new L.Marker(e.latlng);
+            map.addLayer(posMarker);
           } else {
-            marker.setLatLng(e.latlng)
+            posMarker.setLatLng(pos);
           }
           
-          /*
+          // save last position to the store
+          var store = new Lawnchair('openseamp',function(e){
+              console.log('store open');
+          });
+          store.save({key:"lastposition", 'latlng':{lat: pos.lat, lng: pos.lng}});
+          
+          /*//draw a little ship
           var pos = e.latlng;
           var lat = pos.lat;
           var lng = pos.lng;
@@ -263,8 +273,22 @@
         })
         
         map.on('locationerror', function(e) {
-          alert('Could not load GPS Position: ' + e.message);
-          map.fitWorld();
+          // read last position freom store
+          var store = new Lawnchair('openseamp',function(e){
+              console.log('store open');
+          });
+          store.get("lastposition", function(lastposition) {
+            if (lastposition == null) {
+              //if no last position is in store use a default position ("Warnemünde")
+              console.log("setting default position");
+              var defaultPos = new L.LatLng(12.10075, 54.19039);
+              return map.setView(defaultPos, 13);
+            } else {
+              var pos = new L.LatLng(lastposition.latlng.lat, lastposition.latlng.lng);
+              console.log(lastposition.latlng);
+              return map.setView(pos, 16);
+            }
+          });
         });
         
         return map.locateAndSetView(16);
