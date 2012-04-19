@@ -179,7 +179,7 @@
         var hours = now.getHours();
         
         if ((hours >= 9) && (hours <= 19)) { //Day
-          map.addLayer(seamap);
+          map.addLayer(openSeaMap);
         } else { //Night
           map.addLayer(cloudmadeNight);
         }
@@ -259,6 +259,9 @@
   </div>
   
   <script src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+  
+  <link rel="stylesheet" href="add2home/add2home.css">
+  <script src="add2home/add2home.js"></script>
 
 </body>
 </html>
