@@ -17,7 +17,8 @@
   <link rel="apple-touch-startup-image" sizes="768x1004" href="../assets/startup_screen-768x1004.png" />
   
   <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css">
-  <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css">
+  <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css">  
+  <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet_osm.css">
   
   <style>
     article, #map {
@@ -206,7 +207,29 @@
         $('#zoomIn').click(function() { map.zoomIn(); });
         $('#zoomOut').click(function() { map.zoomOut(); });
         
-        $('#setHomePosition').click(function() { map.locateAndSetView(); });
+        function updatePosition() {
+          map.locateAndSetView();
+          if ($('#setHomePosition').hasClass('ui-btn-active')) {
+            setTimeout(updatePosition, 1000);
+          }
+        }
+        $('#setHomePosition').click(function() {
+          var $btn = $(this); 
+          if ($btn.hasClass('ui-btn-active')) {
+            $btn.removeClass('ui-btn-active');
+            map.dragging.enable();
+            map.touchZoom.enable();
+            map.doubleClickZoom.enable();
+            map.scrollWheelZoom.enable();
+          } else {
+            $btn.addClass('ui-btn-active');
+            map.dragging.disable();
+            map.touchZoom.disable();
+            map.doubleClickZoom.disable();
+            map.scrollWheelZoom.disable();
+          }
+          updatePosition();
+        });
         
         var posMarker;
         
