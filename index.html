@@ -1,28 +1,328 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Server</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		
-		<meta http-equiv="REFRESH" content="0;url=www_leaflet/">
-		
-		<style type="text/css">
-		body { width: 100%; height: 100%; background-color: white; }
-		ul { position: relative; top: 50%; width: 100%; height: 100%; background-color: blue; }
-		ul > li { display: block; float: left; width: 50%; height: 50%; text-align: center; }
-		#openstreetmap { height: 114px; width: 114px; background-image: url(assets/OpenStreetMap_logo_114x114.png); }
-		#openseamap { height: 114px; width: 114px; background-image: url(assets/logo_114x114.png); }
-		</style>
-	</head>
-	<body>
-		loading...
-		<!-- 
-		<ul>
-			<li><a href="www_leaflet" ><div id="leaflet" class="">LeafLet Mobile</div></a></li>
-			<li><a href="www_openseamap"><div id="openseamap">OpenLayer Mobile</div></a></li>
-		</ul>
-		-->
-    </body>
+<head>
+  <title>OpenSeaMap</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="format-detection" content="telephone=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  <link rel="apple-touch-icon" href="assets/logo_57x57.png" />
+  <link rel="apple-touch-icon" sizes="72x72" href="assets/logo_72x72.png" />
+  <link rel="apple-touch-icon" sizes="114x114" href="assets/logo_114x114.png" />
+  
+  <link rel="apple-touch-startup-image" href="assets/startup_screen-320x460.png" />
+  <link rel="apple-touch-startup-image" sizes="1024x748" href="assets/startup_screen-1024x748.png" />
+  <link rel="apple-touch-startup-image" sizes="768x1004" href="assets/startup_screen-768x1004.png" />
+  
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css">
+  <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css">  
+  <link rel="stylesheet" href="style/leaflet_osm.css">
+  
+  <style>
+    article, #map {
+      width: 100%;
+      height: 300px;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .ui-content {
+      background-color: #033;
+    }
+    
+    .leaflet-container {
+      background: none;
+    }
+    
+    .leaflet-control-layers {
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      background: black;
+      background-image: -webkit-gradient(linear,left top,left bottom,from(#3C3C3C),to(#111));
+      background-image: -webkit-linear-gradient(#3C3C3C,#111);
+      background-image: -moz-linear-gradient(#3C3C3C,#111);
+      background-image: -ms-linear-gradient(#3C3C3C,#111);
+      background-image: -o-linear-gradient(#3C3C3C,#111);
+      background-image: linear-gradient(#3C3C3C,#111);
+    }
+    
+    .leaflet-control-layers-expanded {
+      font: large "Helvetica Neue", Arial, Helvetica, sans-serif;
+      color: white;
+      text-shadow: none;
+    }
+    
+    .ui-icon {
+      background-color: transparent;
+    }
+  </style>
+  
+  <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+  <script src="http://leaflet.cloudmade.com/dist/leaflet.js"></script>
+  <script src="http://westcoastlogic.com/lawnchair/downloads/lawnchair-0.6.1.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+  
+  <link rel="stylesheet" href="add2home/add2home.css">
+  <script src="add2home/add2home.js"></script>
+</head>
+
+
+<body>
+
+  <div data-role="page" id="page-map">
+    <header data-role="header">
+      <div data-role="controlgroup" data-type="horizontal" class="ui-btn-left" style="top:0em;">
+        <a href="#" id="zoomIn" data-role="button" data-icon="plus" data-iconshadow="false" data-shadow="false" data-iconpos="notext">Zoom In</a>
+        <a href="#" id="zoomOut" data-role="button" data-icon="minus" data-iconshadow="false" data-shadow="false" data-iconpos="notext">Zoom Out</a>
+      </div>
+      <h1>OpenSeaMap.org</h1>
+      <div class="ui-btn-right">
+        <a href="#" id="setHomePosition" data-role="button" data-icon="home" data-iconpos="notext" data-iconshadow="false" data-shadow="false">Position</a>
+        <a href="#page-about" data-role="button" data-icon="info" data-iconpos="notext" data-iconshadow="false" data-shadow="false">Info</a>
+      </div>
+    </header>
+ 
+    <article data-role="content" style="margin: 0; padding: 0">
+      <div id="map"></div>
+    </article>
+
+    <script>
+    (function() {
+      var app;
+      app = {};
+      app.resizeContentArea = function() {
+        var content, contentHeight, footer, header, viewportHeight;
+        
+        window.scroll(0, 0);
+        
+        header = $(":jqmData(role='header'):visible");
+        footer = $(":jqmData(role='footer'):visible");
+        content = $(":jqmData(role='content'):visible");
+        
+        viewportHeight = $(window).height();
+        contentHeight = viewportHeight - header.outerHeight() - footer.outerHeight();
+        
+        $("article:jqmData(role='content')").first().height(contentHeight);
+        
+        return $("#map").height(contentHeight);
+      };
+      window.app = app;
+      $(window).bind('orientationchange pageshow resize', window.app.resizeContentArea);
+      
+      $(document).bind('pageinit', function() {
+        if ($('.leaflet-container').length > 0) return;
+        
+        var OpenSeaMapAttribution = 'Map data &copy; 2012 OpenSeaMap contributors';
+        var OpenStreetMapAttribution = 'Map data &copy; 2012 OpenStreetMap contributors';
+        var CloudmadeAttribution = '(V'+L.VERSION+') Imagery &copy; 2012 CloudMade' + ', ' + OpenStreetMapAttribution;
+        
+        var openSeaMapUrl = 'http://osm1.wtnet.de/tiles/base/{z}/{x}/{y}.png',
+          openSeaMap = new L.TileLayer(openSeaMapUrl, {maxZoom: 17, attribution: OpenStreetMapAttribution});
+        /*
+        var cloudmadeDayUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+          cloudmadeDay = new L.TileLayer(cloudmadeDayUrl, {maxZoom: 17, attribution: CloudmadeAttribution});
+        */
+        var cloudmadeNightUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/8844/256/{z}/{x}/{y}.png',
+          cloudmadeNight = new L.TileLayer(cloudmadeNightUrl, {maxZoom: 17, attribution: CloudmadeAttribution});
+        
+        //background
+        //http://osm1.wtnet.de/tiles/base/16/34697/20716.png
+        
+        //Seezeichen
+        //http://tiles.openseamap.org/seamark/16/34692/20715.png
+        
+        //Sport
+        //http://tiles.openseamap.org/sport/12/2147/1325.png
+        
+        //Weather: wind_vector
+        //http://www.openportguide.org/tiles/actual/wind_vector/5/7/67/40.png
+        
+        //Weather: surface_pressure
+        //http://www.openportguide.org/tiles/actual/surface_pressure/5/7/67/40.png
+        
+        //Weather: air_temperature
+        //http://www.openportguide.org/tiles/actual/air_temperature/5/7/67/40.png
+        
+        //Weather: precipitation
+        //http://www.openportguide.org/tiles/actual/precipitation/5/7/67/40.png
+        
+        //Weather: significant_wave_height
+        //http://www.openportguide.org/tiles/actual/significant_wave_height/5/7/68/40.png
+        
+        /*
+         5-00:00
+         7-06:00
+         9-12:00
+        11-18:00
+        
+        15-06:00
+        19-18:00
+        
+        23-06:00
+        27-18:00
+        */
+        
+        /*
+        var windUrl = 'http://www.openportguide.org/tiles/actual/wind_vector/5/{z}/{x}/{y}.png',
+          wind = new L.TileLayer(windUrl, {maxZoom: 7, attribution: OpenSeaMapAttribution});
+        */
+        
+        var seamapUrl = 'http://tiles.openseamap.org/seamark/{z}/{x}/{y}.png',
+          seamap = new L.TileLayer(seamapUrl, {maxZoom: 17, attribution: OpenSeaMapAttribution});
+          
+        var sportsUrl = 'http://tiles.openseamap.org/sport/{z}/{x}/{y}.png',
+          sports = new L.TileLayer(sportsUrl, {minZoom: 8, maxZoom: 18, attribution: OpenSeaMapAttribution});
+        
+        map = new window.L.Map('map', {
+          zoomControl: false,
+          touchZoom: true
+        });
+          
+        var now = new Date();
+        var hours = now.getHours();
+        
+        if ((hours >= 9) && (hours <= 19)) { //Day
+          map.addLayer(openSeaMap);
+        } else { //Night
+          map.addLayer(cloudmadeNight);
+        }
+        
+        map.addLayer(seamap);
+        
+        var layers = {
+          "Tagesansicht": openSeaMap,
+          "Nachtansicht": cloudmadeNight
+        };
+        var overlays = {
+          "Seezeichen": seamap,
+          "Sport": sports,
+        };
+        var layerControl = new L.Control.Layers(layers, overlays);
+        map.addControl(layerControl);
+        
+        
+        $('#zoomIn').click(function() { map.zoomIn(); });
+        $('#zoomOut').click(function() { map.zoomOut(); });
+        
+        function updatePosition() {
+          map.locateAndSetView();
+          if ($('#setHomePosition').hasClass('ui-btn-active')) {
+            setTimeout(updatePosition, 1000);
+          }
+        }
+        $('#setHomePosition').click(function() {
+          var $btn = $(this); 
+          if ($btn.hasClass('ui-btn-active')) {
+            $btn.removeClass('ui-btn-active');
+            map.dragging.enable();
+            map.touchZoom.enable();
+            map.doubleClickZoom.enable();
+            map.scrollWheelZoom.enable();
+          } else {
+            $btn.addClass('ui-btn-active');
+            map.dragging.disable();
+            map.touchZoom.disable();
+            map.doubleClickZoom.disable();
+            map.scrollWheelZoom.disable();
+          }
+          updatePosition();
+        });
+        
+        var posMarker;
+        
+        map.on('locationfound', function(e) {
+          var pos = e.latlng;
+          
+          if (!posMarker) {
+            posMarker = new L.Marker(e.latlng);
+            map.addLayer(posMarker);
+          } else {
+            posMarker.setLatLng(pos, false);
+          }
+          
+          // save last position to the store
+          var store = new Lawnchair('openseamp',function(e){
+              console.log('store open');
+          });
+          store.save({key:"lastposition", 'latlng':{lat: pos.lat, lng: pos.lng}});
+          
+          /*//draw a little ship
+          var pos = e.latlng;
+          var lat = pos.lat;
+          var lng = pos.lng;
+          var r = 0.0002;
+          var poly_points = [
+            [lat-r, lng+r],
+            [lat-r, lng-r],
+            [lat+r, lng-r],
+            [lat+2*r, lng],
+            [lat+r, lng+r]  
+          ];
+          for (var i = 0, latlngs2 = [], len = poly_points.length; i < len; i++) {
+            latlngs2.push(new L.LatLng(poly_points[i][0], poly_points[i][1]));
+          }
+          var ship_layer = new L.Polygon(latlngs2, {
+            fillColor: "#FF0000",
+            color: "#FF0000",
+            opacity: 1,
+            weight: 2
+          });
+          
+          map.addLayer(ship_layer);
+          */
+        })
+        
+        map.on('locationerror', function(e) {
+          //read last position from store
+          var store = new Lawnchair('openseamp',function(e){
+              console.log('store open');
+          });
+          store.get("lastposition", function(lastposition) {
+            if (lastposition == null) {
+              //if no last position is in store use a default position ("Warnemünde")
+              console.log("setting default position");
+              var defaultPos = new L.LatLng(54.18, 12.10);
+              return map.setView(defaultPos, 13);
+            } else {
+              var pos = new L.LatLng(lastposition.latlng.lat, lastposition.latlng.lng);
+              console.log(lastposition.latlng);
+              return map.setView(pos, 16);
+            }
+          });
+        });
+        
+        return map.locateAndSetView(16);
+      });
+        
+    }).call(this);
+    </script>
+  </div>
+  
+  
+  
+  <div data-role="page" id="page-about">
+    <header data-role="header">
+      <a href="#page-map" data-icon="arrow-l" class="ui-btn-left" data-direction="reverse" data-transition="slide" data-iconshadow="false" data-shadow="false">Map</a>
+      <h1>general information</h1>
+    </header>
+    <ul data-role="listview" data-theme="a" data-divider-theme="a">
+      <li data-role="list-divider">support this app</li>
+      <li><a href="http://flattr.com/thing/622453/OpenSeaMap-Mobile" target="_blank">flattr this app</a></li>
+      <!-- 
+      <li>donate via paypal</li>
+      <li>advertice this app on twitter</li>
+      <li>advertice this app on facebook</li>
+      -->
+      <li data-role="list-divider">development</li>
+      <li><a href="https://github.com/mojoaxel/openseamap-mobile/blob/master/LICENSE.md" target="_blank">copyright and license</a></li>
+      <li><a href="https://github.com/mojoaxel/openseamap-mobile/issues/new" target="_blank">create a new bug-report</a></li>
+    </ul>
+  </div>
+  
+  
+  
+</body>
 </html>
