@@ -114,12 +114,12 @@
       $(window).bind('orientationchange pageshow resize', window.app.resizeContentArea);
       
       // Internationalisation
-      //see: http://stackoverflow.com/questions/8134555/jquery-mobile-json-processing-before-mobile-enhancements
+      // @see: http://stackoverflow.com/questions/8134555/jquery-mobile-json-processing-before-mobile-enhancements
       $.ajaxSetup({"async": false}); 
       $.i18n.init({
         fallbackLng: 'en',
         ns: { namespaces: ['i18n.osm.mobile'], defaultNs: 'i18n.osm.mobile'},
-        useLocalStorage: false 
+        useLocalStorage: false // if enabled language-files are not updated
       }, function() {
         $('#page-map').i18n();
         $('#page-info').i18n();
@@ -141,15 +141,6 @@
       */
       var cloudmadeNightUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/8844/256/{z}/{x}/{y}.png',
         cloudmadeNight = new L.TileLayer(cloudmadeNightUrl, {maxZoom: 17, attribution: CloudmadeAttribution});
-      
-      //background
-      //http://osm1.wtnet.de/tiles/base/16/34697/20716.png
-      
-      //Seezeichen
-      //http://tiles.openseamap.org/seamark/16/34692/20715.png
-      
-      //Sport
-      //http://tiles.openseamap.org/sport/12/2147/1325.png
       
       //Weather: wind_vector
       //http://www.openportguide.org/tiles/actual/wind_vector/5/7/67/40.png
@@ -184,8 +175,8 @@
         wind = new L.TileLayer(windUrl, {maxZoom: 7, attribution: OpenSeaMapAttribution});
       */
       
-      var seamapUrl = 'http://tiles.openseamap.org/seamark/{z}/{x}/{y}.png',
-        seamap = new L.TileLayer(seamapUrl, {maxZoom: 17, attribution: OpenSeaMapAttribution});
+      var seamarksUrl = 'http://tiles.openseamap.org/seamark/{z}/{x}/{y}.png',
+        seamarks = new L.TileLayer(seamarksUrl, {maxZoom: 17, attribution: OpenSeaMapAttribution});
         
       var sportsUrl = 'http://tiles.openseamap.org/sport/{z}/{x}/{y}.png',
         sports = new L.TileLayer(sportsUrl, {minZoom: 8, maxZoom: 18, attribution: OpenSeaMapAttribution});
@@ -198,20 +189,22 @@
       var now = new Date();
       var hours = now.getHours();
       
-      if ((hours >= 9) && (hours <= 19)) { //Day
+      if ((hours >= 9) && (hours <= 19)) { 
+        //Day (default OSM Layer)
         map.addLayer(openSeaMap);
-      } else { //Night
+      } else { 
+        //Night
         map.addLayer(cloudmadeNight);
       }
-      
-      map.addLayer(seamap);
+      // Sea Marks
+      map.addLayer(seamarks);
       
       var layers = {};
       layers[$.t('page-map.layer_daylight', {defaultValue: "Default"})] = openSeaMap;
       layers[$.t('page-map.layer_night', {defaultValue: "Night-Vision"})] = cloudmadeNight;
       
       var overlays = {}
-      overlays[$.t('page-map.overlay_seamarks', {defaultValue: "Sea-Marks"})] = seamap;
+      overlays[$.t('page-map.overlay_seamarks', {defaultValue: "Sea-Marks"})] = seamarks;
       overlays[$.t('page-map.overlay_sport', {defaultValue: "Sport"})] = sports;
                
       var layerControl = new L.Control.Layers(layers, overlays);
