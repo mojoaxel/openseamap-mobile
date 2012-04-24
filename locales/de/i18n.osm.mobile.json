@@ -1,9 +1,26 @@
 {
-    "app_name": "OpenSeaMap - die freie Seekarte",
+  "page-map": {
+    "title": "OpenSeaMap - die freie Seekarte",
     "zoom_in": "Vergrößern",
     "zoom_out": "Verkleinern",
     "btn_position": "Position",
     "btn_info": "Info",
     
-    "EOF" : "EOF"
+    "layer_daylight": "Tagesansicht",
+    "layer_night": "Nachtansicht",
+    "overlay_seamarks": "Seezeichen",
+    "overlay_sport": "Sport"
+  },
+  
+  "page-info": {
+    "map": "Karte",
+    "title": "Allgemeine Informationen",
+    "support": "Untersützen Sie diese App",
+    "flattr": "Flattrn Sie diese App!",
+    "development": "Entwicklung",
+    "copyright": "Copyright und Lizensen",
+    "new_bug_report": "Einen neuen Fehler-Bericht erstellen"
+  },
+  
+  "EOF" : "EOF"
 }

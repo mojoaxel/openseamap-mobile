@@ -1,9 +1,26 @@
 {
-    "app_name": "OpenSeaMap - The free nautical chart",
+  "page-map": {
+    "title": "OpenSeaMap - The free nautical chart",
     "zoom_in": "zoom in",
     "zoom_out": "zoom out",
     "btn_position": "position",
     "btn_info": "info",
     
-    "EOF" : "EOF"
+    "layer_daylight": "Default",
+    "layer_night": "Night-Vision",
+    "overlay_seamarks": "Sea Marks",
+    "overlay_sport": "Sports"
+  },
+  
+  "page-info": {
+    "map": "Map",
+    "title": "General information",
+    "support": "Support this app",
+    "flattr": "Flattr this app",
+    "development": "Development",
+    "copyright": "Copyright and license",
+    "new_bug_report": "Create a new bug-report"
+  },
+  
+  "EOF" : "EOF"
 }
