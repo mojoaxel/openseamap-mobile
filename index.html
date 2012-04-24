@@ -60,13 +60,14 @@
     }
   </style>
   
-  <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
-  <script src="http://leaflet.cloudmade.com/dist/leaflet.js"></script>
-  <script src="http://westcoastlogic.com/lawnchair/downloads/lawnchair-0.6.1.min.js"></script>
-  <script src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+  <script src="http://code.jquery.com/jquery-1.6.4.min.js" type="text/javascript"></script>
+  <script src="https://raw.github.com/mojoaxel/i18next/master/i18next-1.2.5.min.js" type="text/javascript"></script>
+  <script src="http://leaflet.cloudmade.com/dist/leaflet.js" type="text/javascript"></script>
+  <script src="http://westcoastlogic.com/lawnchair/downloads/lawnchair-0.6.1.min.js" type="text/javascript"></script>
+  <script src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js" type="text/javascript"></script>
   
   <link rel="stylesheet" href="add2home/add2home.css">
-  <script src="add2home/add2home.js"></script>
+  <script src="add2home/add2home.js" type="text/javascript"></script>
 </head>
 
 
@@ -75,13 +76,13 @@
   <div data-role="page" id="page-map">
     <header data-role="header">
       <div data-role="controlgroup" data-type="horizontal" class="ui-btn-left" style="top:0em;">
-        <a href="#" id="zoomIn" data-role="button" data-icon="plus" data-iconshadow="false" data-shadow="false" data-iconpos="notext">Zoom In</a>
-        <a href="#" id="zoomOut" data-role="button" data-icon="minus" data-iconshadow="false" data-shadow="false" data-iconpos="notext">Zoom Out</a>
+        <a href="#" id="zoomIn" data-role="button" data-icon="plus" data-iconshadow="false" data-shadow="false" data-iconpos="notext" data-i18n="zoom_in">zoom in</a>
+        <a href="#" id="zoomOut" data-role="button" data-icon="minus" data-iconshadow="false" data-shadow="false" data-iconpos="notext" data-i18n="zoom_out">zoom out</a>
       </div>
-      <h1>OpenSeaMap.org</h1>
+      <h1 data-i18n="app_name">OpenSeaMap.org</h1>
       <div class="ui-btn-right">
-        <a href="#" id="setHomePosition" data-role="button" data-icon="home" data-iconpos="notext" data-iconshadow="false" data-shadow="false">Position</a>
-        <a href="#page-about" data-role="button" data-icon="info" data-iconpos="notext" data-iconshadow="false" data-shadow="false">Info</a>
+        <a href="#" id="setHomePosition" data-role="button" data-icon="home" data-iconpos="notext" data-iconshadow="false" data-shadow="false" data-i18n="btn_position">position</a>
+        <a href="#page-about" data-role="button" data-icon="info" data-iconpos="notext" data-iconshadow="false" data-shadow="false" data-i18n="btn_info">info</a>
       </div>
     </header>
  
@@ -111,6 +112,20 @@
       };
       window.app = app;
       $(window).bind('orientationchange pageshow resize', window.app.resizeContentArea);
+      
+      // Internationalisation
+      //see: http://stackoverflow.com/questions/8134555/jquery-mobile-json-processing-before-mobile-enhancements
+      $.ajaxSetup({"async": false}); 
+      $.i18n.init({
+        fallbackLng: 'en',
+        ns: { namespaces: ['i18n.osm.mobile'], defaultNs: 'i18n.osm.mobile'},
+        useLocalStorage: true 
+      }, function() {
+        $('#page-map').i18n();
+        $('#page-about').i18n();
+      });
+      $.ajaxSetup({"async": true});
+      
       
       $(document).bind('pageinit', function() {
         if ($('.leaflet-container').length > 0) return;
@@ -296,7 +311,7 @@
         
         return map.locateAndSetView(16);
       });
-        
+      
     }).call(this);
     </script>
   </div>

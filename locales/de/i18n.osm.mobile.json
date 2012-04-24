@@ -1,0 +1,9 @@
+{
+    "app_name": "OpenSeaMap - die freie Seekarte",
+    "zoom_in": "Vergrößern",
+    "zoom_out": "Verkleinern",
+    "btn_position": "Position",
+    "btn_info": "Info",
+    
+    "EOF" : "EOF"
+}

@@ -1,0 +1,9 @@
+{
+    "app_name": "OpenSeaMap - The free nautical chart",
+    "zoom_in": "zoom in",
+    "zoom_out": "zoom out",
+    "btn_position": "position",
+    "btn_info": "info",
+    
+    "EOF" : "EOF"
+}
